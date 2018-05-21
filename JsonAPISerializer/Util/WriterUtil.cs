@@ -1,5 +1,5 @@
-﻿using JsonAPISerializer.Models;
-using JsonAPISerializer.Util;
+﻿using JsonAPIFormatSerializer.Models;
+using JsonAPIFormatSerializer.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -9,8 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using JsonAPISerializer.ReferenceResolver;
-namespace JsonApiSerializer.Util
+using JsonAPIFormatSerializer.ReferenceResolver;
+namespace JsonAPIFormatSerializer.Util
 {
     internal static class WriterUtil
     {

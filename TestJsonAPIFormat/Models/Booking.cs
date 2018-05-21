@@ -1,4 +1,4 @@
-﻿using JsonAPISerializer.Models;
+﻿using JsonAPIFormatSerializer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonAPISerializer", "JsonAPISerializer\JsonAPISerializer.csproj", "{73126AF5-559F-47B1-804C-E10CBF408897}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonAPIFormatSerializer", "JsonAPISerializer\JsonAPIFormatSerializer.csproj", "{73126AF5-559F-47B1-804C-E10CBF408897}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestJsonAPIFormat", "TestJsonAPIFormat\TestJsonAPIFormat.csproj", "{3B6F73A6-343C-44DE-A1C4-FB83E651D045}"
 EndProject

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JsonAPISerializer.Util
+namespace JsonAPIFormatSerializer.Util
 {
     internal class JsonWriterCapture : JsonWriter
     {

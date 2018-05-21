@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JsonAPISerializer.Models
+namespace JsonAPIFormatSerializer.Models
 {
     public class Reference:IDictionary<string,Object>
     {

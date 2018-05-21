@@ -1,7 +1,7 @@
-﻿using JsonApiSerializer.Util;
-using JsonAPISerializer.Models;
-using JsonAPISerializer.ReferenceResolver;
-using JsonAPISerializer.Util;
+﻿using JsonAPIFormatSerializer.Util;
+using JsonAPIFormatSerializer.Models;
+using JsonAPIFormatSerializer.ReferenceResolver;
+using JsonAPIFormatSerializer.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -12,7 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace JsonAPISerializer.JsonConverters
+namespace JsonAPIFormatSerializer.JsonConverters
 {
     public class ResourceConverter : JsonConverter
     {

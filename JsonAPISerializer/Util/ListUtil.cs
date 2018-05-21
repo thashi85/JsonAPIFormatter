@@ -1,4 +1,4 @@
-﻿using JsonAPISerializer.Util;
+﻿using JsonAPIFormatSerializer.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JsonApiSerializer.Util
+namespace JsonAPIFormatSerializer.Util
 {
     internal static class ListUtil
     {

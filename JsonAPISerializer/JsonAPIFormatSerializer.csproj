@@ -7,8 +7,8 @@
     <ProjectGuid>{73126AF5-559F-47B1-804C-E10CBF408897}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>JsonAPISerializer</RootNamespace>
-    <AssemblyName>JsonAPISerializer</AssemblyName>
+    <RootNamespace>JsonAPIFormatSerializer</RootNamespace>
+    <AssemblyName>JsonAPIFormatSerializer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace JsonApiSerializer.Util
+namespace JsonAPIFormatSerializer.Util
 {
     internal static class ReaderUtil
     {

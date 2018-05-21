@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JsonAPISerializer.Models
+namespace JsonAPIFormatSerializer.Models
 {
     /// <summary>
     /// Represents any class that is a document root. Document root classes are serialized and deserialized specially.

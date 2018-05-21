@@ -1,5 +1,5 @@
-﻿using JsonAPISerializer.JsonConverters;
-using JsonAPISerializer.ReferenceResolver;
+﻿using JsonAPIFormatSerializer.JsonConverters;
+using JsonAPIFormatSerializer.ReferenceResolver;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JsonAPISerializer
+namespace JsonAPIFormatSerializer
 {
     public class JsonApiFormatSerializer : JsonSerializerSettings
     {

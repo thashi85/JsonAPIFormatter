@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using JsonApiSerializer.Util;
-using JsonAPISerializer.Models;
+using JsonAPIFormatSerializer.Util;
+using JsonAPIFormatSerializer.Models;
 using System.Text.RegularExpressions;
 
-namespace JsonAPISerializer.JsonConverters
+namespace JsonAPIFormatSerializer.JsonConverters
 {
     public class ResourceListConverter : JsonConverter
     {

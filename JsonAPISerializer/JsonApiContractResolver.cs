@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using JsonAPISerializer.JsonConverters;
-using JsonAPISerializer.Models;
-using JsonAPISerializer.Util;
+using JsonAPIFormatSerializer.JsonConverters;
+using JsonAPIFormatSerializer.Models;
+using JsonAPIFormatSerializer.Util;
 using System.Reflection;
 
-namespace JsonAPISerializer
+namespace JsonAPIFormatSerializer
 {
     public class JsonApiContractResolver: DefaultContractResolver
     {
@@ -22,7 +22,7 @@ namespace JsonAPISerializer
         private string[] _href;
        
 
-        private List<Field> Fields = new List<JsonAPISerializer.Field>();
+        private List<Field> Fields = new List<JsonAPIFormatSerializer.Field>();
         public JsonApiContractResolver(JsonConverter resourceObjectConverter, string[] _includes=null, string[] _fields=null,string[] _href=null)
         {
             ResourceObjectConverter = resourceObjectConverter;

@@ -56,9 +56,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JsonAPISerializer\JsonAPISerializer.csproj">
+    <ProjectReference Include="..\JsonAPISerializer\JsonAPIFormatSerializer.csproj">
       <Project>{73126AF5-559F-47B1-804C-E10CBF408897}</Project>
-      <Name>JsonAPISerializer</Name>
+      <Name>JsonAPIFormatSerializer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

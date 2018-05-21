@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using JsonAPISerializer.Models;
+using JsonAPIFormatSerializer.Models;
 using Newtonsoft.Json.Serialization;
-using JsonAPISerializer.ReferenceResolver;
-using JsonAPISerializer.Util;
+using JsonAPIFormatSerializer.ReferenceResolver;
+using JsonAPIFormatSerializer.Util;
 using System.Reflection;
-using JsonApiSerializer.Util;
+using JsonAPIFormatSerializer.Util;
 
-namespace JsonAPISerializer.JsonConverters
+namespace JsonAPIFormatSerializer.JsonConverters
 {
     public class DocumentRootConverter : JsonConverter
     {

@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Linq;
 using System.Collections;
-using JsonAPISerializer.Models;
+using JsonAPIFormatSerializer.Models;
 
-namespace JsonAPISerializer.ReferenceResolver
+namespace JsonAPIFormatSerializer.ReferenceResolver
 {
     public class IncludedReferenceResolver :Reference, IReferenceResolver
     {
