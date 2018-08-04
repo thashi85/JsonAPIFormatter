@@ -82,7 +82,8 @@ var article =
                                 Body = "First!",
                                 Author = new Person
                                 {
-                                    Id = "2"
+                                    Id = "2",
+                                    Type="people"
                                 },
                             },
                             new Comment
@@ -465,6 +466,146 @@ JSON output with includes
       }
    ]
 }
+```
+Since include is identified using property name, If we include both comments and author, article related authors and comment related authors will be return
+```c#
+var settings = new JsonApiFormatSerializer(new string[] {"comments", "author" }, null,
+                new string[] { "self:articles",
+                               "next:articles?page[offset]=2",
+                               "last:articles?page[offset]=10" });
+settings.BaseUrl = "http://localhost/";
+```
+Json output
+```JSON
+{  
+   "links":{  
+      "self":"http://localhost/articles",
+      "next":"http://localhost/articles?page[offset]=2",
+      "last":"http://localhost/articles?page[offset]=10"
+   },
+   "data":[  
+      {  
+         "type":"article",
+         "id":"1",
+         "attributes":{  
+            "title":"JSON API sample!"
+         },
+         "relationships":{  
+            "author":{  
+               "data":{  
+                  "type":"people",
+                  "id":"9"
+               },
+               "links":{  
+                  "self":"http://localhost/people/relationships/9/",
+                  "related":"http://localhost/people/9/"
+               }
+            },
+            "comments":{  
+               "data":[  
+                  {  
+                     "type":"comment",
+                     "id":"5"
+                  },
+                  {  
+                     "type":"comment",
+                     "id":"12"
+                  }
+               ],
+               "links":{  
+                  "self":"http://localhost/articles/1/relationships/comments",
+                  "related":"http://localhost/articles/1/comments"
+               }
+            }
+         },
+         "links":{  
+            "self":"http://localhost/articles/1/"
+         }
+      }
+   ],
+   "included":[  
+      {  
+         "id":"9",
+         "type":"people",
+         "attributes":{  
+            "first-name":"Dan",
+            "last-name":"Gebhardt",
+            "twitter":"dgeb"
+         },
+         "links":{  
+            "self":"http://localhost/people/9"
+         }
+      },
+      {  
+         "type":"comment",
+         "id":"5",
+         "attributes":{  
+            "body":"First!"
+         },
+         "relationships":{  
+            "author":{  
+               "data":{  
+                  "type":"people",
+                  "id":"2"
+               }
+            }
+         },
+         "links":{  
+            "self":"http://localhost/articles/1/comments/5"
+         }
+      },
+      {  
+         "type":"comment",
+         "id":"12",
+         "attributes":{  
+            "body":"I like XML better"
+         },
+         "relationships":{  
+            "author":{  
+               "data":{  
+                  "type":"people",
+                  "id":"9"
+               }
+            }
+         },
+         "links":{  
+            "self":"http://localhost/articles/1/comments/12"
+         }
+      },
+      {  
+         "id":"2",
+         "type":"people",
+         "links":{  
+            "self":"http://localhost/people/2"
+         }
+      }
+   ]
+}
+```
+If we need to differentiate two different include “IncludeName” attribute value can be used to set different name for the includes.
+```c#
+public class Article
+    {
+        public string Id { get; set; }
+
+        public string Title { get; set; }
+        [Resource(new string[] { "self:people/relationships/#{author.id}#/",
+                                  "related:people/#{author.id}#/" })]
+        public Person Author { get; set; }
+        [Resource(new string[] { "self:articles/#{article.id}#/relationships/comments",
+                                 "related:articles/#{article.id}#/comments" })]
+        public List<Comment> Comments { get; set; }
+    }
+
+    [Resource(new string[] { "self:articles/#{article.id}#/comments/#{comment.id}#" })]
+    public class Comment
+    {
+        public string Id { get; set; }
+
+        public string Body { get; set; }
+        [Resource(IncludeName ="CommentAuthor")]
+        public Person Author { get; set; }
+    }
 ```
 
 
