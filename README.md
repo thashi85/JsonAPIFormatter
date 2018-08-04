@@ -304,8 +304,7 @@ For attribute level links, “#{[Property Name].id}#” is used
 ```
 “#{author.id}#” will be replaced with id of the author 
 
-###### Derived class(Mixed Resource Type search)
-###### Includes and Sparse Fields
+###### Includes
 Include and fields can be defined when instantiate the JsonApiFormatSerializer
 Property name is used to identify the include
 ```c#
@@ -607,6 +606,7 @@ public class Article
         public Person Author { get; set; }
     }
 ```
+###### Sparse Fields
 
-
+###### Derived class(Mixed Resource Type search)
 
