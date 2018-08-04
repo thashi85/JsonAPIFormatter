@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TestJsonAPIFormat.Model;
+using TestJsonAPIFormat.Models;
 
 namespace TestJsonAPIFormat
 {
@@ -14,6 +15,78 @@ namespace TestJsonAPIFormat
     {
         static void Main(string[] args)
         {
+            
+            var author = new Person
+            {
+                Id = "9",
+                FirstName = "Dan",
+                LastName = "Gebhardt",
+                Twitter = "dgeb",
+                Type="people"
+            };
+
+            var articles = new Article[] {
+                    new Article
+                    {
+                        Id = "1",
+                        Title = "JSON API sample!",
+                        Author = author,
+                        Comments = new List<Comment>
+                        {
+                            new Comment
+                            {
+                                Id = "5",
+                                Body = "First!",
+                                Author = new Person
+                                {
+                                    Id = "2",
+                                    Type="people"
+                                },
+                            },
+                            new Comment
+                            {
+                                Id = "12",
+                                Body = "I like XML better",
+                                Author = author,
+                            }
+                        }
+                    },
+                     new Article
+                    {
+                        Id = "2",
+                        Title = "Second article data",
+                        Author = author,
+                        Comments = new List<Comment>
+                        {
+                            new Comment
+                            {
+                                Id = "6",
+                                Body = "test",
+                                Author = new Person
+                                {
+                                    Id = "7",
+                                    Type="people"
+                                },
+                            },
+                        }
+                     }
+            };
+        
+
+            var settings = new JsonApiFormatSerializer(new string[] { "comments" }, null,
+                new string[] { "self:articles",
+                               "next:articles?page[offset]=2",
+                               "last:articles?page[offset]=10" });
+            settings.BaseUrl = "http://localhost/";
+               
+          
+            //To serialize json:api format
+            string json_article = JsonConvert.SerializeObject(articles, settings);
+
+            //To deserialize from json:api format
+            Article[] arr = JsonConvert.DeserializeObject<Article[]>(json_article, new JsonApiFormatSerializer());
+
+
             var booking = new Booking()
             {
                 Id = 3,

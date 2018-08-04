@@ -168,10 +168,10 @@ namespace JsonAPIFormatSerializer.JsonConverters
 
             //A resource object MUST contain at least the following top-level members: type
             var typeProp = contract.Properties.GetClosestMatchProperty("type");
+            type = GenerateDefaultTypeName(valueType);
             if (typeProp == null)
             {
-                writer.WritePropertyName("type");
-                type = GenerateDefaultTypeName(valueType);
+                writer.WritePropertyName("type");                
                 serializer.Serialize(writer, type);
             }
 
@@ -254,7 +254,9 @@ namespace JsonAPIFormatSerializer.JsonConverters
                                             }
                                             if (include_id != null && include_type != null)
                                             {
-                                                resolver.ResourceToInclude.Add(IncludedReferenceResolver.GetReferenceValue(include_id.ToString(), include_type.ToString()));
+                                                var refer = IncludedReferenceResolver.GetReferenceValue(include_id.ToString(), include_type.ToString());
+                                                resolver.ResourceToInclude.Add(refer);
+                                                serializer.ReferenceResolver.AddReference(null, refer, valueElement);
                                             }
 
                                         }
@@ -273,7 +275,11 @@ namespace JsonAPIFormatSerializer.JsonConverters
                                     {
                                         var include_name = ((link != null && !string.IsNullOrEmpty(link.IncludeName)) ? link.IncludeName : prop.PropertyName);
                                         if (resolver.Includes != null && resolver.Includes.Contains(include_name.ToLower()))
-                                            resolver.ResourceToInclude.Add(IncludedReferenceResolver.GetReferenceValue(include_id.ToString(), include_type.ToString()));
+                                        {
+                                            var refer = IncludedReferenceResolver.GetReferenceValue(include_id.ToString(), include_type.ToString());
+                                            resolver.ResourceToInclude.Add(refer);
+                                            serializer.ReferenceResolver.AddReference(null, refer, propValue);
+                                        }
                                     }
                                 }
                             }

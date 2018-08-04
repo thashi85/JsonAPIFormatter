@@ -37,6 +37,7 @@ namespace JsonAPIFormatSerializer.Util
 
             if (resAttr != null && resAttr.Links.Count > 0)
             {
+                var resolver = (serializer.ReferenceResolver as IncludedReferenceResolver);
                 if (probe != null)
                 {
                     probe.AddPropertyName(PropertyNames.Links);
@@ -68,8 +69,12 @@ namespace JsonAPIFormatSerializer.Util
                 {
                     //var lk = entry.Value.Replace(("#{id}#"), id.ToString());
                     var lk = entry.Value.Replace(reference, id?.ToString()).Replace(relatedObjRef, relatedObjId.ToString());
-                    var resolver = (serializer.ReferenceResolver as IncludedReferenceResolver);
-                    lk=lk.Replace("#{BASE_URL}#", resolver.BaseUrl);
+                    if (!ListUtil.IsList(obj.GetType()))
+                    {
+                        lk = lk.Replace("#{"+ obj.GetType().Name.ToLower()+".id}#", id?.ToString());
+                    }
+
+                    lk =lk.Replace("#{BASE_URL}#", resolver.BaseUrl);
 
                     Regex rg = new Regex("(?>(#{)[^},(BASE_URL)]*(}#))");
                     var arr = rg.Matches(lk);
@@ -87,7 +92,7 @@ namespace JsonAPIFormatSerializer.Util
                             {
                                 var parentObj= resolver.RefList.Where(r => r.Reference == linkedObj.ParentReference).SingleOrDefault();
                                 bool found = false;
-                                while (!found || parentObj!=null)
+                                while (!found && parentObj!=null)
                                 {
                                     if (parentObj.Reference.ToLower().StartsWith(key + ":")) {
                                         var val = parentObj.Reference.Replace(key + ":", "");
