@@ -1,22 +1,24 @@
 # JsonAPIFormatter
-Json API Format: Serializer and Deserializer 
+## Json API Format: Serializer and Deserializer 
 
-JsonAPIFormatSerializer
-The JsonApiFormatSerializer serialize  C# objects into the json:api format and deserialize Json API format data to C# objects. 
+###### JsonAPIFormatSerializer
+The JsonApiFormatSerializer serialize  C# objects into the json:api format and deserialize Json API format data to C# objects.
+
 It supports sparse fields and includes
 Easily links can be set up for resources and relationships
 Deserialization support for collection of different types of derived classes  
 
 Json API Format serializer settings can be initialize without passing any parameter or passing following parameters
-    string[] _includes  
-    string[] _fields   
-    string[] _href	
+>    string[] _includes  
+>    string[] _fields   
+>   string[] _href	
 
 Base URL need to be set to generate links
+```c#
 var settings = new JsonApiFormatSerializer();
 settings.BaseUrl = “http://localhost/”;
-             
-Models
+```           
+###### Models
 Example 1:  Article
 
     [Resource(new string[] { "self:articles/#{article.id}#/" })]
@@ -56,7 +58,7 @@ Example 1:  Article
     
     
 Sample Data
-
+```c#
 var author = new Person
             {
                 Id = "9",
@@ -92,19 +94,21 @@ var article =
                         }
 
                     };
-                    
-Single Resource
+```                   
+###### Single Resource
 
 Serialize using following, Base url need to be passed to generate the  links.
+```c#
 var settings = new JsonApiFormatSerializer()
               {
                  BaseUrl = "http://localhost/"
               };
 //To serialize json:api format
 string json_article = JsonConvert.SerializeObject(article, settings);
-
+```
 By default type of the class is considered as the type, by defining an attribute called type, that can be override
 Ex:  type will be people
+```c#
 var author = new Person
             {
                 Id = "9",
@@ -113,8 +117,9 @@ var author = new Person
                 Twitter = "dgeb",
                 Type="people"
             };
+```
 Json Data
-
+```Json
 {  
    "data":{  
       "type":"article",
@@ -155,22 +160,24 @@ Json Data
       }
    }
 }
-
-List of Resources
+```
+###### List of Resources
 
 Serialize list of resources as below sample
 Multiple links can be pass to the Json API format serializer
+```c#
   var settings = new JsonApiFormatSerializer(null, null,
                 new string[] { "self:articles", 
    "next:articles?page[offset]=2",     
    "last:articles?page[offset]=10" });
 
-  settings.BaseUrl = "http://localhost/";
-               
+  settings.BaseUrl = "http://localhost/";              
           
   //To serialize json:api format
   string json_article = JsonConvert.SerializeObject(articles, settings);
-
+```
+Json Output
+```Json
 {  
    "links":{  
       "self":"http://localhost/articles",
@@ -252,10 +259,10 @@ Multiple links can be pass to the Json API format serializer
       }
    ]
 }
-
-Links
-Mixed Resource Types
-Sparse Fields
-Includes
+```
+###### Links
+###### Mixed Resource Types
+###### Sparse Fields
+###### Includes
 
 
