@@ -38,7 +38,8 @@ namespace JsonAPIFormatSerializer.JsonConverters
             JsonObjectContract contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(objectType);
             var isNew = false;
             if (existingValue==null)
-            {
+            {               
+               
                 existingValue = contract.DefaultCreator();
                 isNew = true;                
             }
@@ -74,7 +75,7 @@ namespace JsonAPIFormatSerializer.JsonConverters
                         if (tp != null)
                         {
                             obj = Activator.CreateInstance(tp);
-                            
+                            contract=(JsonObjectContract)serializer.ContractResolver.ResolveContract(obj.GetType());
                         }
                     }
                     //retObj.id = obj;
