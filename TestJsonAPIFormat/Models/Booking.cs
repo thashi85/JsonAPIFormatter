@@ -73,7 +73,7 @@ namespace TestJsonAPIFormat.Model
         public int? ItemTypeId { get; set; }
 
     }
-    [Resource(new string[] { "self:contacts/#{contact.id}#/" })]
+    //[Resource(new string[] { "self:contacts/#{contact.id}#/" })]
     public class Contact 
     {
         public int? Id { get; set; }
@@ -94,7 +94,7 @@ namespace TestJsonAPIFormat.Model
         public List<Contact> Contacts { get; set; }
     }
 
-    public class CooperateClient:Client
+    public class CorporateClient:Client
     {
         public string CompanyName { get; set; }
     }

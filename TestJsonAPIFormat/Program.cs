@@ -15,14 +15,58 @@ namespace TestJsonAPIFormat
     {
         static void Main(string[] args)
         {
-            
+
+
+
+            var corporate = new CorporateClient()
+            {
+                Id = 1,
+                ClientRef = "CR001",
+                CompanyName = "Test Company",
+                Contacts = new List<Contact>()
+                {
+                    new Contact()
+                    {
+                        Id=12,
+                        ContactRef="CN0012",
+                        FirstName="FirstName12"
+                    }
+                }
+            };
+
+
+            var individual = new IndividualClient()
+            {
+                Id = 2,
+                ClientRef = "IND002",
+                PhoneNo = "07852639635"
+
+            };
+
+            var list = new List<Client>();
+            list.Add(corporate);
+            list.Add(individual);
+
+            var settings = new JsonApiFormatSerializer(new string[] { },
+                                                     new string[] { },
+                                                     new string[] { "self:clients", });
+            settings.BaseUrl = "http://localhost/";
+            //To serialize json:api format
+            string json_client = JsonConvert.SerializeObject(list, settings);
+
+            //To deserialize from json:api format
+            Client[] arr = JsonConvert.DeserializeObject<Client[]>(json_client, new JsonApiFormatSerializer());
+
+
+
+            /*
             var author = new Person
             {
                 Id = "9",
                 FirstName = "Dan",
                 LastName = "Gebhardt",
                 Twitter = "dgeb",
-                Type="people"
+                Type = "people"
             };
 
             var articles = new Article[] {
@@ -40,46 +84,35 @@ namespace TestJsonAPIFormat
                                 Author = new Person
                                 {
                                     Id = "2",
-                                    Type="people"
+                                    Type="people",
+                                    FirstName="test"
                                 },
                             },
                             new Comment
                             {
                                 Id = "12",
                                 Body = "I like XML better",
-                                Author = author,
+                                Author =new Person
+                                {
+                                    Id = "12",
+                                    Type="people",
+                                    FirstName="test12"
+                                },
                             }
                         }
                     },
-                     new Article
-                    {
-                        Id = "2",
-                        Title = "Second article data",
-                        Author = author,
-                        Comments = new List<Comment>
-                        {
-                            new Comment
-                            {
-                                Id = "6",
-                                Body = "test",
-                                Author = new Person
-                                {
-                                    Id = "7",
-                                    Type="people"
-                                },
-                            },
-                        }
-                     }
-            };
-        
 
-            var settings = new JsonApiFormatSerializer(new string[] { "comments" }, null,
-                new string[] { "self:articles",
-                               "next:articles?page[offset]=2",
-                               "last:articles?page[offset]=10" });
+            };
+
+
+            var settings = new JsonApiFormatSerializer(new string[] { "comments", "author" },
+                                                       new string[] { "Title", "comments", "comment.body" },
+                                                       new string[] { "self:articles",
+                                                                       "next:articles?page[offset]=2",
+                                                                       "last:articles?page[offset]=10" });
             settings.BaseUrl = "http://localhost/";
-               
-          
+
+
             //To serialize json:api format
             string json_article = JsonConvert.SerializeObject(articles, settings);
 
@@ -87,6 +120,11 @@ namespace TestJsonAPIFormat
             Article[] arr = JsonConvert.DeserializeObject<Article[]>(json_article, new JsonApiFormatSerializer());
 
 
+
+
+            
+
+           /// 
             var booking = new Booking()
             {
                 Id = 3,
@@ -210,7 +248,27 @@ namespace TestJsonAPIFormat
             setting.BaseUrl = baseUrl;
             string json2 =( JsonConvert.SerializeObject(bkList, setting));
             List<Booking> objList = JsonConvert.DeserializeObject<List<Booking>>(json2, new JsonApiFormatSerializer());
-
+            // new Article
+            //{
+            //    Id = "2",
+            //    Title = "Second article data",
+            //    Author = author,
+            //    Comments = new List<Comment>
+            //    {
+            //        new Comment
+            //        {
+            //            Id = "6",
+            //            Body = "test",
+            //            Author = new Person
+            //            {
+            //                Id = "7",
+            //                Type="people"
+            //            },
+            //        },
+            //    }
+            // }
+            
+        }*/
         }
     }
-}
+    }

@@ -64,7 +64,10 @@ namespace JsonAPIFormatSerializer
         {
             if (_fields != null && _fields.Count()>0 && Fields.Count()==0)
             {
-                populateFields(type);
+
+                if (!DocumentRootConverter.CanConvertStatic(type)) { 
+                    populateFields(type);
+                }
             }
             var ret= base.CreateProperties(type, memberSerialization);
             var tp = type.Name.ToLower();

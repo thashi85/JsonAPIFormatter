@@ -28,7 +28,7 @@ namespace TestJsonAPIFormat.Models
         public string Id { get; set; }
 
         public string Body { get; set; }
-
+        [Resource(IncludeName ="CommentAuthor")]
         public Person Author { get; set; }
     }
     [Resource(new string[] { "self:people/#{person.id}#" })]
