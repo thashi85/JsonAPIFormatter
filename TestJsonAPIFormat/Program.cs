@@ -1,13 +1,7 @@
 ﻿using JsonAPIFormatSerializer;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using TestJsonAPIFormat.Model;
-using TestJsonAPIFormat.Models;
 
 namespace TestJsonAPIFormat
 {
@@ -16,8 +10,7 @@ namespace TestJsonAPIFormat
         static void Main(string[] args)
         {
 
-
-
+            
             var corporate = new CorporateClient()
             {
                 Id = 1,
@@ -57,8 +50,23 @@ namespace TestJsonAPIFormat
             //To deserialize from json:api format
             Client[] arr = JsonConvert.DeserializeObject<Client[]>(json_client, new JsonApiFormatSerializer());
 
-
-
+            
+            //var res = new CacheManager().GetResource("Booking_9150");
+            //var booking= JsonConvert.DeserializeObject<Optimo.WebAPI.Models.Booking.V1.Booking>(res, new JsonApiSerializer.JsonApiSerializerSettings());
+            //using (JS_MethodLogger.Log("JsonApiSerializerSettings :", JS_LogOptions.All))
+            //{
+            //    var res1 = JsonConvert.SerializeObject(booking, new JsonApiSerializer.JsonApiSerializerSettings());
+            //}
+            //using (JS_MethodLogger.Log("JsonAPIFormatSerializer :", JS_LogOptions.All))
+            //{
+                
+            //    var settings = new JsonApiFormatSerializer(new string[] { },
+            //                                       new string[] { },
+            //                                       new string[] { "self:clients", });
+            //    settings.BaseUrl = "http://localhost/";
+            //    var res1 = JsonConvert.SerializeObject(booking, settings);
+            //}
+            //var s = "";
             /*
             var author = new Person
             {
@@ -122,7 +130,7 @@ namespace TestJsonAPIFormat
 
 
 
-            
+
 
            /// 
             var booking = new Booking()
@@ -267,7 +275,7 @@ namespace TestJsonAPIFormat
             //        },
             //    }
             // }
-            
+
         }*/
         }
     }

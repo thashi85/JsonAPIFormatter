@@ -113,111 +113,113 @@ namespace JsonAPIFormatSerializer.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            //Add root reference
-            serializer.ReferenceResolver.AddReference(null, IncludedReferenceResolver.RootReference, value);
-
-            var contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(value.GetType());
-            writer.WriteStartObject();
-
-          
-
-            var propertiesOutput = new HashSet<string>();
-            foreach (var prop in contract.Properties)
+           // using (JS_MethodLogger.Log("JsonAPIFormatSerializer DocumentRootConverter WriteJson :" + value.GetType().Name, JS_LogOptions.All))
             {
-                //we will do includes last, so we we can ensure all the references have been added
-                if (prop.PropertyName == PropertyNames.Included)
-                    continue;
+                //Add root reference
+                serializer.ReferenceResolver.AddReference(null, IncludedReferenceResolver.RootReference, value);
 
-                //respect the serializers null handling value
-                var propValue = prop.ValueProvider.GetValue(value);
-                if (propValue == null && (prop.NullValueHandling ?? serializer.NullValueHandling) == NullValueHandling.Ignore)
-                    continue;
+                var contract = (JsonObjectContract)serializer.ContractResolver.ResolveContract(value.GetType());
+                writer.WriteStartObject();
 
-                //main object links
-                if (_href != null && prop.PropertyName==PropertyNames.Data)
+
+
+                var propertiesOutput = new HashSet<string>();
+                foreach (var prop in contract.Properties)
                 {
-                    ResourceAttribute resA = new ResourceAttribute(_href);
-                    WriterUtil.GenerateResourceLinks(serializer,writer, propValue, resA, propValue.GetType().Name.ToLower());//todo
-                }
+                    //we will do includes last, so we we can ensure all the references have been added
+                    if (prop.PropertyName == PropertyNames.Included)
+                        continue;
 
-                //A document MAY contain any of these top-level members: jsonapi, links, included
-                //We are also allowing everything else they happen to have on the root document
-                writer.WritePropertyName(prop.PropertyName);
-                serializer.Serialize(writer, propValue);
-                propertiesOutput.Add(prop.PropertyName);
-            }
+                    //respect the serializers null handling value
+                    var propValue = prop.ValueProvider.GetValue(value);
+                    if (propValue == null && (prop.NullValueHandling ?? serializer.NullValueHandling) == NullValueHandling.Ignore)
+                        continue;
 
-           
-            //A document MUST contain one of the following (data, errors, meta)
-            //so if we do not have one of them we will output a null data
-            if (!propertiesOutput.Contains(PropertyNames.Data)
-                && !propertiesOutput.Contains(PropertyNames.Errors)
-                && !propertiesOutput.Contains(PropertyNames.Meta))
-            {
-                propertiesOutput.Add(PropertyNames.Data);
-                writer.WritePropertyName(PropertyNames.Data);
-                writer.WriteNull();
-            }
-            //Handle Include
-            //If a document does not contain a top-level data key, the included member MUST NOT be present
-            if (propertiesOutput.Contains(PropertyNames.Data))
-            {
-                //output the included. If we have a specified included field we will out everything in there
-                //and we will also output all the references defined in our reference resolver
-                var resolver = (serializer.ReferenceResolver as IncludedReferenceResolver);
-                var renderedReferences = resolver?.RenderedReferences ?? new HashSet<string>();
-                var includedReferences = serializer.ReferenceResolver as IDictionary<string, object> ?? Enumerable.Empty<KeyValuePair<string, object>>();
-
-
-                var referencesToInclude = includedReferences
-                    .Where(x => x.Key != IncludedReferenceResolver.RootReference)
-                    .Where(x => !renderedReferences.Contains(x.Key))
-                    .Where(x=>resolver.ResourceToInclude.Contains(x.Key))
-                    .ToList(); //dont output values we have already output
-                var includedProperty = contract.Properties.GetClosestMatchProperty(PropertyNames.Included);
-                var includedValues = includedProperty?.ValueProvider?.GetValue(value) as IEnumerable<object> ?? Enumerable.Empty<object>();
-
-                //if we have some references we will output them
-                if (referencesToInclude.Any() || includedValues.Any())
-                {
-                    writer.WritePropertyName(PropertyNames.Included);
-                    writer.WriteStartArray();
-
-                    foreach (var includedValue in includedValues)
+                    //main object links
+                    if (_href != null && prop.PropertyName == PropertyNames.Data)
                     {
-                        serializer.Serialize(writer, includedValue);
+                        ResourceAttribute resA = new ResourceAttribute(_href);
+                        WriterUtil.GenerateResourceLinks(serializer, writer, propValue, resA, propValue.GetType().Name.ToLower());//todo
                     }
 
-                    //I know we can alter the OrderedDictionary while enumerating it, otherwise this would error
-                    //foreach (var includedReference in includedReferences)
-                    //for (int i = 0; i < includedReferences.Count(); i++)
-                    //{
-                    //    var includedReference = includedReferences.ElementAt(i);
-                    //    serializer.Serialize(writer, includedReference.Value);
-                    //}
-                    
-                    while (referencesToInclude.Count>0)
+                    //A document MAY contain any of these top-level members: jsonapi, links, included
+                    //We are also allowing everything else they happen to have on the root document
+                    writer.WritePropertyName(prop.PropertyName);
+                    serializer.Serialize(writer, propValue);
+                    propertiesOutput.Add(prop.PropertyName);
+                }
+
+
+                //A document MUST contain one of the following (data, errors, meta)
+                //so if we do not have one of them we will output a null data
+                if (!propertiesOutput.Contains(PropertyNames.Data)
+                    && !propertiesOutput.Contains(PropertyNames.Errors)
+                    && !propertiesOutput.Contains(PropertyNames.Meta))
+                {
+                    propertiesOutput.Add(PropertyNames.Data);
+                    writer.WritePropertyName(PropertyNames.Data);
+                    writer.WriteNull();
+                }
+                //Handle Include
+                //If a document does not contain a top-level data key, the included member MUST NOT be present
+                if (propertiesOutput.Contains(PropertyNames.Data))
+                {
+                    //output the included. If we have a specified included field we will out everything in there
+                    //and we will also output all the references defined in our reference resolver
+                    var resolver = (serializer.ReferenceResolver as IncludedReferenceResolver);
+                    var renderedReferences = resolver?.RenderedReferences ?? new HashSet<string>();
+                    var includedReferences = serializer.ReferenceResolver as IDictionary<string, object> ?? Enumerable.Empty<KeyValuePair<string, object>>();
+
+
+                    var referencesToInclude = includedReferences
+                        .Where(x => x.Key != IncludedReferenceResolver.RootReference)
+                        .Where(x => !renderedReferences.Contains(x.Key))
+                        .Where(x => resolver.ResourceToInclude.Contains(x.Key))
+                        .ToList(); //dont output values we have already output
+                    var includedProperty = contract.Properties.GetClosestMatchProperty(PropertyNames.Included);
+                    var includedValues = includedProperty?.ValueProvider?.GetValue(value) as IEnumerable<object> ?? Enumerable.Empty<object>();
+
+                    //if we have some references we will output them
+                    if (referencesToInclude.Any() || includedValues.Any())
                     {
-                        for (int i = 0; i < referencesToInclude.Count(); i++)
+                        writer.WritePropertyName(PropertyNames.Included);
+                        writer.WriteStartArray();
+
+                        foreach (var includedValue in includedValues)
                         {
-                            var includedReference = referencesToInclude.ElementAt(i);
-                            serializer.Serialize(writer, includedReference.Value);
+                            serializer.Serialize(writer, includedValue);
                         }
-                        referencesToInclude= includedReferences
-                                            .Where(x => x.Key != IncludedReferenceResolver.RootReference)
-                                            .Where(x => !renderedReferences.Contains(x.Key))
-                                            .Where(x => resolver.ResourceToInclude.Contains(x.Key))
-                                            .ToList(); //dont output values we have already output
 
+                        //I know we can alter the OrderedDictionary while enumerating it, otherwise this would error
+                        //foreach (var includedReference in includedReferences)
+                        //for (int i = 0; i < includedReferences.Count(); i++)
+                        //{
+                        //    var includedReference = includedReferences.ElementAt(i);
+                        //    serializer.Serialize(writer, includedReference.Value);
+                        //}
+
+                        while (referencesToInclude.Count > 0)
+                        {
+                            for (int i = 0; i < referencesToInclude.Count(); i++)
+                            {
+                                var includedReference = referencesToInclude.ElementAt(i);
+                                serializer.Serialize(writer, includedReference.Value);
+                            }
+                            referencesToInclude = includedReferences
+                                                .Where(x => x.Key != IncludedReferenceResolver.RootReference)
+                                                .Where(x => !renderedReferences.Contains(x.Key))
+                                                .Where(x => resolver.ResourceToInclude.Contains(x.Key))
+                                                .ToList(); //dont output values we have already output
+
+                        }
+
+
+                        writer.WriteEndArray();
                     }
-
-
-                    writer.WriteEndArray();
                 }
-            }          
-            
-            writer.WriteEndObject();
-         
+
+                writer.WriteEndObject();
+            }
 
  }
 
